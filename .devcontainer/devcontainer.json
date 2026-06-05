@@ -1,0 +1,51 @@
+{
+  "name": "nextjs-lab",
+  // Node.js 22 LTS (Bookworm) + TypeScript ベースイメージ
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  // corepack で pnpm を有効化 → 依存をインストール
+  "onCreateCommand": "corepack enable && corepack prepare pnpm@latest --activate",
+  "updateContentCommand": "pnpm install --frozen-lockfile || pnpm install",
+  // 接続時に dev サーバを起動（プロジェクト未作成のうちは何もしない）
+  "postAttachCommand": "test -f package.json && pnpm dev || true",
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Next.js dev server",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "yoavbls.pretty-ts-errors",
+        "streetsidesoftware.code-spell-checker",
+        "github.vscode-github-actions"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+        "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+        "tailwindCSS.experimental.classRegex": [
+          ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+          ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+        ]
+      }
+    }
+  },
+  "remoteUser": "node",
+  "remoteEnv": {
+    // Docker / Codespaces 上での Fast Refresh を確実にする
+    "WATCHPACK_POLLING": "true"
+  }
+}
