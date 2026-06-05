@@ -1,41 +1,56 @@
 {
+  // コンテナ表示名
   "name": "nextjs-lab",
-  // Node.js 22 LTS (Bookworm) + TypeScript ベースイメージ
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:22-bookworm",
+  // Node.js 24 + TypeScript ベースイメージ
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:24",
+  // 追加ツール: git / GitHub CLI をイメージに同梱
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
-  // corepack で pnpm を有効化 → 依存をインストール
-  "onCreateCommand": "corepack enable && corepack prepare pnpm@latest --activate",
-  "updateContentCommand": "pnpm install --frozen-lockfile || pnpm install",
-  // 接続時に dev サーバを起動（プロジェクト未作成のうちは何もしない）
+  // ① 生成直後に一度だけ: corepack で pnpm を有効化
+  "onCreateCommand": "sudo corepack enable && corepack prepare pnpm@latest --activate",
+  // ② ソース取得後: package.json があれば依存をインストール（無ければ何もしない）
+  "updateContentCommand": "test -f package.json && (pnpm install --frozen-lockfile || pnpm install) || true",
+  // ③ 作成完了後: 追加セットアップ (claude CLI, lefthook の git hooks 登録)
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  // ④ 接続時に dev サーバを起動（プロジェクト未作成のうちは何もしない）
   "postAttachCommand": "test -f package.json && pnpm dev || true",
+  // ホストへ公開するポート (Next.js dev server)
   "forwardPorts": [3000],
+  // 公開ポートの表示名と自動フォワード時の挙動
   "portsAttributes": {
     "3000": {
       "label": "Next.js dev server",
       "onAutoForward": "openPreview"
     }
   },
+  // VS Code 固有の設定（拡張機能・エディタ設定）
   "customizations": {
     "vscode": {
+      // コンテナに自動インストールする拡張機能
       "extensions": [
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
+        "biomejs.biome",
         "bradlc.vscode-tailwindcss",
         "yoavbls.pretty-ts-errors",
         "streetsidesoftware.code-spell-checker",
         "github.vscode-github-actions"
       ],
+      // 保存時フォーマット等のワークスペース設定（Biome を既定フォーマッタに）
       "settings": {
         "editor.formatOnSave": true,
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.defaultFormatter": "biomejs.biome",
         "editor.codeActionsOnSave": {
-          "source.fixAll.eslint": "explicit"
+          "quickfix.biome": "explicit",
+          "source.fixAll.biome": "explicit",
+          "source.organizeImports.biome": "explicit"
         },
-        "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-        "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+        "[javascript]": { "editor.defaultFormatter": "biomejs.biome" },
+        "[javascriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
+        "[typescript]": { "editor.defaultFormatter": "biomejs.biome" },
+        "[typescriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
+        "[json]": { "editor.defaultFormatter": "biomejs.biome" },
+        "[jsonc]": { "editor.defaultFormatter": "biomejs.biome" },
         "tailwindCSS.experimental.classRegex": [
           ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
           ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
@@ -43,7 +58,9 @@
       }
     }
   },
+  // コンテナ内で使用する非 root ユーザー
   "remoteUser": "node",
+  // コンテナ内プロセスに渡す環境変数
   "remoteEnv": {
     // Docker / Codespaces 上での Fast Refresh を確実にする
     "WATCHPACK_POLLING": "true"
