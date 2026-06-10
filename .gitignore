@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
+# dependencies（モノレポなので全階層の node_modules を無視）
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -19,6 +19,8 @@
 
 # production
 /build
+# Vite のビルド成果物（各パッケージの dist）
+dist/
 
 # misc
 .DS_Store

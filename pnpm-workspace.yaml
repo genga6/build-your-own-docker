@@ -1,3 +1,7 @@
+packages:
+  - "frontend"
+
+# インストール時のビルドスクリプト実行を許可するパッケージ。
+# esbuild は Vite が内部で使う変換エンジンで、ネイティブバイナリ準備に必要。
 allowBuilds:
-  sharp: true
-  unrs-resolver: true
+  esbuild: true
