@@ -1,6 +1,6 @@
 {
   // コンテナ表示名
-  "name": "react-go-lab",
+  "name": "build-your-own-docker",
   // Node.js 24 + TypeScript ベースイメージ
   "image": "mcr.microsoft.com/devcontainers/typescript-node:24",
   // 追加ツール: git / GitHub CLI / Go をイメージに同梱

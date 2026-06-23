@@ -1,5 +1,5 @@
 {
-  "name": "react-go-lab",
+  "name": "build-your-own-docker",
   "private": true,
   "packageManager": "pnpm@11.0.9",
   "scripts": {

@@ -23,7 +23,7 @@ frontend/   React + Vite + TypeScript
 ```
 
 - ルートは **pnpm workspace**（`pnpm-workspace.yaml` が `frontend` を管理）。
-- backend は独立した Go モジュール（`backend/go.mod`、module path `github.com/genga6/nextjs-lab/backend`）。
+- backend は独立した Go モジュール（`backend/go.mod`、module path `github.com/genga6/build-your-own-docker/backend`）。
 
 ### frontend
 
