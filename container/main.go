@@ -78,6 +78,11 @@ func child() {
 	// UTS namespace 仲なので、ここでホスト名を変えてもホスト側には影響しない。
 	must(syscall.Sethostname([]byte("container")))
 
+	must(syscall.Chroot("rootfs")) // ルートディレクトリを container/rootfs に変更する。これにより、子プロセスは rootfs 以下しか見えなくなる。
+	must(syscall.Chdir("/"))       // chroot してもカレントディレクトリは古い場所のまま取り残されるので、新しいルートに変更する。
+
+	must(syscall.Mount("proc", "/proc", "proc", 0, "")) // procfs をマウントする。これにより、ps や top が動くようになる。
+
 	// os.Args[2:] = 目的のコマンドとその引数（例: echo hello）。
 	// os.Args[2]  = "echo"（実行するコマンド）
 	// os.Args[3:] = ["hello"]（その引数）
