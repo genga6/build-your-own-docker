@@ -1,4 +1,5 @@
 # build-your-own-docker
+Dockerの実装 ＋ Docker imageの実体 ＋ 依存関係・バージョン
 
 ## 参考
 
