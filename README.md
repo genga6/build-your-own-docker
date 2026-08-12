@@ -8,6 +8,7 @@ Dockerの実装 ＋ Docker imageの実体 ＋ 依存関係・バージョン
 
 ### 入口（自作コンテナのチュートリアル）
 
+- [What even is a container? (Julia Evans)](https://jvns.ca/blog/2016/10/10/what-even-is-a-container/) — 15分で全体像
 - [Build Your Own Container Using Less than 100 Lines of Go (InfoQ)](https://www.infoq.com/articles/build-a-container-golang/) — このリポジトリの出発点
 - [Containers From Scratch • Liz Rice • GOTO 2018](https://www.youtube.com/watch?v=8fi7uSYlOdc)
 - [lizrice/containers-from-scratch](https://github.com/lizrice/containers-from-scratch) — 上の動画の完成コード。`pivot_root` や cgroups の書き方の答え合わせに
@@ -33,6 +34,12 @@ Dockerの実装 ＋ Docker imageの実体 ＋ 依存関係・バージョン
 - [OCI Image Spec: layer.md](https://github.com/opencontainers/image-spec/blob/main/layer.md) — **whiteout（`.wh.` による削除の表現）の仕様**。layer を自分で展開するならここ
 - [OCI Distribution Spec](https://github.com/opencontainers/distribution-spec) — `docker pull` が実際に叩いている HTTP API
 - [OCI Runtime Spec](https://github.com/opencontainers/runtime-spec) — `config.json` に何を書けばコンテナになるのか（自作コードとの対応表として読める）
+
+### 手を動かすツール（自作実装の答え合わせ用）
+
+- [crane](https://github.com/google/go-containerregistry/blob/main/cmd/crane/README.md) — `crane manifest alpine` / `crane config alpine` / `crane blob` で manifest・config・layer を直接覗く
+- [dive](https://github.com/wagoodman/dive) — レイヤごとの増減を見る
+- [skopeo](https://github.com/containers/skopeo) — registry の inspect / コピー
 
 ### Docker が実際に何を設定しているか（答え合わせ用）
 
